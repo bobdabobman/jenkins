@@ -1,3 +1,5 @@
+All commands are to be run from the terraform directory.
+
 Run the terraform first
 
  - terraform plan
@@ -11,4 +13,4 @@ Finally run:
  - ansible-playbook -i ../ansible/hosts.ini ../ansible/install_jenkins.yml --private-key ~/.ssh/my-ec2-keypair -u ubuntu
 
 Optionally run:
- - terraform destroy# jenkins
+ - terraform destroy

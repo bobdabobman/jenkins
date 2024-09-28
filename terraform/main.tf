@@ -1,6 +1,3 @@
 output "ansible_inventory" {
-  value = <<EOF
-[jenkins]
-${aws_instance.jenkins_server.public_ip}
-EOF
+  value = "[jenkins]\n${aws_instance.jenkins_server.public_ip}"
 }

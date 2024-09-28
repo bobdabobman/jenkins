@@ -32,14 +32,13 @@ resource "aws_iam_policy" "jenkins_policy" {
           "ecr:GetAuthorizationToken",
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
-          "ecr:GetRepositoryPolicy",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage",
           "ecr:DescribeRepositories",
           "ecr:ListImages",
-          "ecr:BatchGetImage",
-          "ecr:CompleteLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:PutImage"
+          "ecr:BatchGetImage"
         ],
         Resource = "*"
       },
@@ -74,6 +73,21 @@ resource "aws_iam_policy" "jenkins_policy" {
           "logs:PutLogEvents"
         ],
         Resource = "*"
+      },
+      # EC2
+      {
+        "Effect": "Allow",
+        "Action": "ec2:DescribeAvailabilityZones",
+        "Resource": "*"
+      },
+      # acm
+      {
+        "Effect": "Allow",
+        "Action": [
+          "acm:ListCertificates",
+          "acm:DescribeCertificate"
+        ],
+        "Resource": "*"
       }
     ]
   })
