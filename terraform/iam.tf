@@ -42,15 +42,30 @@ resource "aws_iam_policy" "jenkins_policy" {
         ],
         Resource = "*"
       },
-      # S3 Access (if needed)
+      # S3 Access
       {
-        Effect   = "Allow",
-        Action   = [
-          "s3:ListBucket",
+        "Effect": "Allow",
+        "Action": [
           "s3:GetObject",
-          "s3:PutObject"
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
         ],
-        Resource = "*"
+        "Resource": [
+          "arn:aws:s3:::terraform-state",
+          "arn:aws:s3:::terraform-state/*"
+        ]
+      },
+      # DynnamoDB
+      {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:DescribeTable"
+        ],
+        "Resource": "arn:aws:dynamodb:us-east-1:354923279633:table/terraform-lock-table"
       },
       # ECS Access
       {
@@ -93,7 +108,8 @@ resource "aws_iam_policy" "jenkins_policy" {
           "ec2:DescribeAvailabilityZones",
           "ec2:CreateTags",
           "ec2:ModifyVpcAttribute",
-          "ec2:DescribeVpcAttribute"
+          "ec2:DescribeVpcAttribute",
+          "ec2:DescribeInternetGateways"
         ],
         "Resource": "*"
       },
