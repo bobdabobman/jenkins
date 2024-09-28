@@ -77,7 +77,19 @@ resource "aws_iam_policy" "jenkins_policy" {
       # EC2
       {
         "Effect": "Allow",
-        "Action": "ec2:DescribeAvailabilityZones",
+        "Action": [
+          "ec2:CreateVpc",
+          "ec2:DescribeVpcs",
+          "ec2:DeleteVpc",
+          "ec2:CreateSubnet",
+          "ec2:DescribeSubnets",
+          "ec2:DeleteSubnet",
+          "ec2:CreateRouteTable",
+          "ec2:DescribeRouteTables",
+          "ec2:AssociateRouteTable",
+          "ec2:CreateInternetGateway",
+          "ec2:AttachInternetGateway"
+        ],
         "Resource": "*"
       },
       # acm
