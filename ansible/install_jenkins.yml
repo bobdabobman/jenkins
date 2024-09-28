@@ -1,0 +1,60 @@
+---
+- name: Setup Jenkins server with AWS CLI, Terraform, and Docker
+  hosts: jenkins
+  become: yes
+  
+  tasks:
+    - name: Update apt package list
+      apt:
+        update_cache: yes
+
+    - name: Install AWS CLI
+      apt:
+        name: awscli
+        state: present
+
+    - name: Install unzip utility
+      apt:
+        name: unzip
+        state: present
+
+    - name: Download Terraform
+      get_url:
+        url: https://releases.hashicorp.com/terraform/1.5.5/terraform_1.5.5_linux_amd64.zip
+        dest: /tmp/terraform_1.5.5_linux_amd64.zip
+
+    - name: Unzip Terraform
+      unarchive:
+        src: /tmp/terraform_1.5.5_linux_amd64.zip
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Move Terraform to /usr/local/bin
+      command: mv /tmp/terraform /usr/local/bin/terraform
+      args:
+        creates: /usr/local/bin/terraform
+
+    - name: Check Terraform version
+      command: terraform --version
+      register: terraform_version_output
+
+    - name: Display Terraform version
+      debug:
+        msg: "{{ terraform_version_output.stdout }}"
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Add Jenkins user to Docker group
+      user:
+        name: jenkins
+        groups: docker
+        append: yes
+
+    - name: Restart Jenkins service
+      systemd:
+        name: jenkins
+        state: restarted
+        enabled: yes
