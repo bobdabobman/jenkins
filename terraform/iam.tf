@@ -84,6 +84,7 @@ resource "aws_iam_policy" "jenkins_policy" {
           "ec2:CreateSubnet",
           "ec2:DescribeSubnets",
           "ec2:DeleteSubnet",
+          "ec2:ModifySubnetAttribute",
           "ec2:CreateRouteTable",
           "ec2:DescribeRouteTables",
           "ec2:AssociateRouteTable",
