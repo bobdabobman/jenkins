@@ -88,7 +88,8 @@ resource "aws_iam_policy" "jenkins_policy" {
           "ec2:DescribeRouteTables",
           "ec2:AssociateRouteTable",
           "ec2:CreateInternetGateway",
-          "ec2:AttachInternetGateway"
+          "ec2:AttachInternetGateway",
+          "ec2:DescribeAvailabilityZones"
         ],
         "Resource": "*"
       },
