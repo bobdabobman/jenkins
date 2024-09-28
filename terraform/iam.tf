@@ -91,7 +91,8 @@ resource "aws_iam_policy" "jenkins_policy" {
           "ec2:AttachInternetGateway",
           "ec2:DescribeAvailabilityZones",
           "ec2:CreateTags",
-          "ec2:ModifyVpcAttribute"
+          "ec2:ModifyVpcAttribute",
+          "ec2:DescribeVpcAttribute"
         ],
         "Resource": "*"
       },
