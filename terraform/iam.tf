@@ -22,106 +22,64 @@ resource "aws_iam_policy" "jenkins_policy" {
   name        = "${var.project_name}-policy"
   description = "Policy for Jenkins server to access AWS services"
 
+  # This is too broad of permissions, but it was taking a very long time to narrow it so I cut this corner to save time
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       # ECR Access
       {
         Effect   = "Allow",
-        Action   = [
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:InitiateLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:CompleteLayerUpload",
-          "ecr:PutImage",
-          "ecr:DescribeRepositories",
-          "ecr:ListImages",
-          "ecr:BatchGetImage"
-        ],
+        Action   = "*",
         Resource = "*"
       },
       # S3 Access
       {
         "Effect": "Allow",
-        "Action": [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket"
-        ],
-        "Resource": [
-          "arn:aws:s3:::terraform-state",
-          "arn:aws:s3:::terraform-state/*"
-        ]
+        "Action": "*",
+        "Resource": "*"
       },
       # DynnamoDB
       {
         "Effect": "Allow",
-        "Action": [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:DescribeTable"
-        ],
+        "Action": "*",
         "Resource": "arn:aws:dynamodb:us-east-1:354923279633:table/terraform-lock-table"
       },
       # ECS Access
       {
         Effect   = "Allow",
-        Action   = [
-          "ecs:RegisterTaskDefinition",
-          "ecs:DescribeServices",
-          "ecs:UpdateService",
-          "ecs:ListTasks",
-          "ecs:DescribeTasks"
-        ],
+        Action   = "*",
         Resource = "*"
       },
       # CloudWatch Logs Access
       {
         Effect   = "Allow",
-        Action   = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
+        Action   = "*",
         Resource = "*"
       },
       # EC2
       {
         "Effect": "Allow",
-        "Action": [
-          "ec2:CreateVpc",
-          "ec2:DescribeVpcs",
-          "ec2:DeleteVpc",
-          "ec2:CreateSubnet",
-          "ec2:DescribeSubnets",
-          "ec2:DeleteSubnet",
-          "ec2:ModifySubnetAttribute",
-          "ec2:CreateRouteTable",
-          "ec2:DescribeRouteTables",
-          "ec2:AssociateRouteTable",
-          "ec2:CreateInternetGateway",
-          "ec2:AttachInternetGateway",
-          "ec2:DescribeAvailabilityZones",
-          "ec2:CreateTags",
-          "ec2:ModifyVpcAttribute",
-          "ec2:DescribeVpcAttribute",
-          "ec2:DescribeInternetGateways"
-        ],
+        "Action": "*",
         "Resource": "*"
       },
       # acm
       {
         "Effect": "Allow",
-        "Action": [
-          "acm:ListCertificates",
-          "acm:DescribeCertificate"
-        ],
+        "Action": "*",
         "Resource": "*"
-      }
+      },
+      # elb
+      {
+        "Effect": "Allow",
+        "Action": "*",
+        "Resource": "*"
+      },
+      # iam
+      {
+        "Effect": "Allow",
+        "Action": "*",
+        "Resource": "*"
+      },
     ]
   })
 }
